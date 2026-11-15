@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}｜私房食譜</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <main class="recipe">
+    <a class="back" href="../index.html">← 回首頁</a>
+
+    <header class="hero">
+      <h1>{{title}}</h1>
+      <p class="subtitle">份數：{{servings}}<span class="tag tag-{{category_code}}">{{category}}</span></p>
+    </header>
+
+    {{image}}
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="times">
+          <section id="prep-time">
+            <h2>準備時間</h2>
+            <p>{{prep_time}}</p>
+          </section>
+          <section id="cook-time">
+            <h2>烹飪時間</h2>
+            <p>{{cook_time}}</p>
+          </section>
+        </div>
+
+        <section id="ingredients" class="ingredients">
+          <h2>食材清單</h2>
+          <ul>
+            {{ingredients}}
+          </ul>
+        </section>
+      </aside>
+
+      <div class="main">
+        <section id="steps" class="steps">
+          <h2>步驟</h2>
+          <ol>
+            {{steps}}
+          </ol>
+        </section>
+
+        <section id="tips" class="tips">
+          <h2>小秘訣</h2>
+          <ul>
+            {{tips}}
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <p class="source">來源：{{source}}｜最後更新：{{updated}}</p>
+  </main>
+</body>
+</html>

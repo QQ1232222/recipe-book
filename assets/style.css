@@ -1,0 +1,181 @@
+/* 私房食譜｜風格 C「午後陶器」
+   規則見 AGENTS.md 第 2 節。顏色一律使用下方 CSS 變數，不在頁面內寫死色碼。 */
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap");
+
+:root {
+  /* 基本色 */
+  --bg: #F4ECE4;        /* 燕麥：頁面底色 */
+  --surface: #FFFFFF;   /* 白：卡片、主內容 */
+  --sand: #EBDDCD;      /* 沙色：側欄、hover */
+  --text: #3F3430;      /* 炭棕：主文字 */
+  --muted: #84766E;     /* 次要文字 */
+  --primary: #B26B55;   /* 陶土：主色（標題區、選取狀態、小標） */
+  --on-primary: #FFF7F2;/* 陶土上的文字 */
+  --sage: #94A086;      /* 鼠尾草綠：步驟編號 */
+  --tip-bg: #E6EBDD;    /* 淡鼠尾草：小秘訣底色 */
+  --tip-title: #6E7A60; /* 小秘訣標題 */
+  --divider: rgba(63, 52, 48, .1);
+
+  /* 分類色（底色／文字／色帶），依上菜順序 */
+  --appetizer-bg: #F6E7D6; --appetizer-fg: #875E36; --appetizer-band: #D4A373;
+  --soup-bg: #E6EBDD;      --soup-fg: #5F6B52;      --soup-band: #94A086;
+  --salad-bg: #ECEBD8;     --salad-fg: #6B6A3C;     --salad-band: #B5B07A;
+  --main-bg: #F3E1DA;      --main-fg: #8E4F3D;      --main-band: #B26B55;
+  --dessert-bg: #F2E3E3;   --dessert-fg: #8A5A5E;   --dessert-band: #C49497;
+  --drink-bg: #EFE6DC;     --drink-fg: #6E5A48;     --drink-band: #A89078;
+
+  /* 尺寸 */
+  --radius-lg: 24px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+  --page-width: 960px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans TC", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--primary); }
+
+/* ---------- 共用 ---------- */
+.hero {
+  margin: 16px 0 24px;
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.hero h1 { font-size: 2.6rem; font-weight: 700; margin: 0; letter-spacing: .08em; line-height: 1.3; }
+.hero .subtitle { margin: 4px 0 0; opacity: .9; }
+
+.tag {
+  display: inline-block;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1.8;
+  font-weight: 500;
+}
+.tag-appetizer { background: var(--appetizer-bg); color: var(--appetizer-fg); }
+.tag-soup      { background: var(--soup-bg);      color: var(--soup-fg); }
+.tag-salad     { background: var(--salad-bg);     color: var(--salad-fg); }
+.tag-main      { background: var(--main-bg);      color: var(--main-fg); }
+.tag-dessert   { background: var(--dessert-bg);   color: var(--dessert-fg); }
+.tag-drink     { background: var(--drink-bg);     color: var(--drink-fg); }
+.hero .tag { margin-left: 10px; background: rgba(255, 255, 255, .22); color: inherit; }
+
+.site-footer { padding: 24px 16px 32px; text-align: center; font-size: 13px; color: var(--muted); }
+.site-footer p { margin: 0; }
+
+/* ---------- 首頁 ---------- */
+.container { max-width: var(--page-width); margin: 0 auto; padding: 8px 16px 32px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.filters button {
+  padding: 6px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.filters button:hover { background: var(--sand); }
+.filters button.active { background: var(--primary); color: var(--on-primary); }
+.filters button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  border-top: 6px solid var(--sand);
+  transition: transform .15s, box-shadow .15s;
+}
+.card[data-category="appetizer"] { border-top-color: var(--appetizer-band); }
+.card[data-category="soup"]      { border-top-color: var(--soup-band); }
+.card[data-category="salad"]     { border-top-color: var(--salad-band); }
+.card[data-category="main"]      { border-top-color: var(--main-band); }
+.card[data-category="dessert"]   { border-top-color: var(--dessert-band); }
+.card[data-category="drink"]     { border-top-color: var(--drink-band); }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(63, 52, 48, .08); }
+.card[hidden] { display: none; }
+.card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.card h2 { font-size: 1.2rem; font-weight: 700; margin: 16px 20px 4px; }
+.card .meta { margin: 0 20px 18px; font-size: 14px; color: var(--muted); }
+.card .meta .tag { margin-right: 6px; }
+
+.empty { text-align: center; color: var(--muted); padding: 48px 0; }
+
+/* ---------- 食譜頁 ---------- */
+.recipe { max-width: var(--page-width); margin: 0 auto; padding: 24px 16px 16px; }
+
+.back {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+}
+.back:hover { background: var(--sand); }
+
+.recipe-image { width: 100%; max-height: 420px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 24px; }
+
+.layout { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
+.sidebar { position: sticky; top: 16px; padding: 24px; border-radius: var(--radius-md); background: var(--sand); }
+.main { padding: 28px 32px; border-radius: var(--radius-md); background: var(--surface); }
+
+.recipe section { margin: 0 0 24px; }
+.recipe section:last-child { margin-bottom: 0; }
+.recipe section h2 { font-size: .85rem; font-weight: 700; letter-spacing: .15em; color: var(--primary); margin: 0 0 8px; }
+
+.times { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.times section { margin: 0 !important; padding: 12px; text-align: center; border-radius: var(--radius-sm); background: var(--surface); }
+.times p { margin: 0; font-size: 1.1rem; font-weight: 500; }
+
+.ingredients ul { list-style: none; padding: 0; margin: 0; }
+.ingredients li { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--divider); }
+.ingredients li:last-child { border-bottom: 0; }
+.ingredients .qty { color: var(--muted); text-align: right; }
+
+.steps ol { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 48px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--bg); }
+.steps li:last-child { border-bottom: 0; }
+.steps li::before { content: counter(step, decimal-leading-zero); font-size: 1.5rem; font-weight: 700; line-height: 1.2; color: var(--sage); }
+
+.tips { padding: 18px 22px; border-radius: 16px; background: var(--tip-bg); }
+.recipe .tips h2 { color: var(--tip-title); }
+.tips ul { margin: 0; padding-left: 20px; }
+
+.source { margin: 24px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+
+/* ---------- RWD ---------- */
+@media (max-width: 900px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .hero { padding: 24px; border-radius: 18px; }
+  .hero h1 { font-size: 2rem; }
+  .main { padding: 20px; }
+}
+@media (max-width: 600px) {
+  .card-grid { grid-template-columns: 1fr; }
+}
